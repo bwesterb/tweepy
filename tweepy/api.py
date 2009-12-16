@@ -484,27 +484,27 @@ class API(object):
 
     def lists(self, *args, **kargs):
         return bind_api(
-            path = '/%s/lists.json' % self.auth.get_username(),
+            path = '/{owner}/lists.json',
             parser = parse_lists,
-            allowed_param = ['cursor'],
+            allowed_param = ['cursor', 'owner'],
             require_auth = True
         )(self, *args, **kargs)
     lists.pagination_mode = 'cursor'
 
     def lists_memberships(self, *args, **kargs):
         return bind_api(
-            path = '/%s/lists/memberships.json' % self.auth.get_username(),
+            path = '/{owner}/lists/memberships.json',
             parser = parse_lists,
-            allowed_param = ['cursor'],
+            allowed_param = ['cursor', 'owner'],
             require_auth = True
         )(self, *args, **kargs)
     lists_memberships.pagination_mode = 'cursor'
 
     def lists_subscriptions(self, *args, **kargs):
         return bind_api(
-            path = '/%s/lists/subscriptions.json' % self.auth.get_username(),
+            path = '/{owner}/lists/subscriptions.json',
             parser = parse_lists,
-            allowed_param = ['cursor'],
+            allowed_param = ['cursor', 'owner'],
             require_auth = True
         )(self, *args, **kargs)
     lists_subscriptions.pagination_mode = 'cursor'
