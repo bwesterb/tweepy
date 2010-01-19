@@ -52,21 +52,17 @@ class User(Model):
         self._api.destroy_friendship(user_id=self.id)
         self.following = False
 
-    def lists_memberships(self, *args, **kwargs):
-	return self._api.lists_memberships(owner=self.screen_name,
-			*args, **kwargs)
-    lists_memberships.pagination_mode = 'cursor'
+    def lists_memberships(self):
+	return self._api.lists_memberships(owner=self.screen_name)
 
-    def lists_subscriptions(self, *args, **kwargs):
-	return self._api.lists_subscriptions(owner=self.screen_name,
-			*args, **kwargs)
+    def lists_subscriptions(self):
+	return self._api.lists_subscriptions(owner=self.screen_name)
 
-    def lists(self, *args, **kwargs):
-	return self._api.lists(owner=self.screen_name, *args, **kwargs)
+    def lists(self):
+	return self._api.lists(owner=self.screen_name)
 
-    def followers_ids(self, *args, **kwargs):
-	return self._api.followers_ids(user_id=self.id, *args, **kwargs)
-    followers_ids.pagination_mode = 'cursor'
+    def followers_ids(self):
+	return self._api.followers_ids(user_id=self.id)
 
 
 class DirectMessage(Model):
@@ -126,7 +122,6 @@ class List(Model):
 
     def subscribers(self, **kargs):
         return self._api.list_subscribers(self.user.screen_name, self.slug, **kargs)
-    subscribers.pagination_mode = 'cursor'
 
     def is_subscribed(self, id):
         return self._api.is_subscribed_list(self.user.screen_name, self.slug, id)
