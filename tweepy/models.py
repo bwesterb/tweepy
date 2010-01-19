@@ -4,6 +4,21 @@
 
 from tweepy.error import TweepError
 
+def pagination_proxy(name_or_func=None):
+    def wrapper(f):
+        class Wrapper(object):
+            def __get__(self, inst, owner):
+                setattr(owner, f.__name__, f)
+                f.pagination_mode = getattr(inst._api,
+                        (f.__name__ if name_or_func is None
+                            else name_or_func)).pagination_mode
+                return getattr(inst, f.__name__)
+        return Wrapper()
+    if not isinstance(name_or_func, str):
+        f2 = name_or_func
+        name_or_func = None
+        return wrapper(f2)
+    return wrapper
 
 class Model(object):
 
@@ -35,12 +50,15 @@ class Status(Model):
 
 class User(Model):
 
+    @pagination_proxy('user_timeline')
     def timeline(self, **kargs):
         return self._api.user_timeline(user_id=self.id, **kargs)
 
+    @pagination_proxy
     def friends(self, **kargs):
         return self._api.friends(user_id=self.id, **kargs)
 
+    @pagination_proxy
     def followers(self, **kargs):
         return self._api.followers(user_id=self.id, **kargs)
 
@@ -52,15 +70,19 @@ class User(Model):
         self._api.destroy_friendship(user_id=self.id)
         self.following = False
 
+    @pagination_proxy
     def lists_memberships(self, *args, **kargs):
         return self._api.lists_memberships(user=self.screen_name, *args, **kargs)
 
+    @pagination_proxy
     def lists_subscriptions(self, *args, **kargs):
         return self._api.lists_subscriptions(user=self.screen_name, *args, **kargs)
 
+    @pagination_proxy
     def lists(self, *args, **kargs):
         return self._api.lists(user=self.screen_name, *args, **kargs)
 
+    @pagination_proxy
     def followers_ids(self, *args, **kargs):
         return self._api.followers_ids(user_id=self.id, *args, **kargs)
 
