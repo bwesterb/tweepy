@@ -52,19 +52,6 @@ class User(Model):
         self._api.destroy_friendship(user_id=self.id)
         self.following = False
 
-    def lists_memberships(self):
-	return self._api.lists_memberships(owner=self.screen_name)
-
-    def lists_subscriptions(self):
-	return self._api.lists_subscriptions(owner=self.screen_name)
-
-    def lists(self):
-	return self._api.lists(owner=self.screen_name)
-
-    def followers_ids(self):
-	return self._api.followers_ids(user_id=self.id)
-
-
 class DirectMessage(Model):
 
     def destroy(self):
