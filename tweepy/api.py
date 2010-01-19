@@ -8,6 +8,7 @@ import mimetypes
 from tweepy.binder import bind_api
 from tweepy.error import TweepError
 from tweepy.parsers import *
+from tweepy.models import ModelFactory
 
 
 class API(object):
@@ -16,8 +17,8 @@ class API(object):
     def __init__(self, auth_handler=None,
             host='api.twitter.com', search_host='search.twitter.com',
              cache=None, secure=False, api_root='/1', search_root='',
-            retry_count=0, retry_delay=0, retry_errors=None):
-        # you may access these freely
+            retry_count=0, retry_delay=0, retry_errors=None,
+            model_factory=None):
         self.auth = auth_handler
         self.host = host
         self.search_host = search_host
@@ -28,6 +29,7 @@ class API(object):
         self.retry_count = retry_count
         self.retry_delay = retry_delay
         self.retry_errors = retry_errors
+        self.model_factory = model_factory or ModelFactory
 
     """ statuses/public_timeline """
     public_timeline = bind_api(
@@ -482,32 +484,26 @@ class API(object):
             require_auth = True
         )(self, *args, **kargs)
 
-    def lists(self, *args, **kargs):
-        return bind_api(
-            path = '/%s/lists.json' % self.auth.get_username(),
-            parser = parse_lists,
-            allowed_param = ['cursor'],
-            require_auth = True
-        )(self, *args, **kargs)
-    lists.pagination_mode = 'cursor'
+    lists = bind_api(
+        path = '/{user}/lists.json',
+        parser = parse_lists,
+        allowed_param = ['user', 'cursor'],
+        require_auth = True
+    )
 
-    def lists_memberships(self, *args, **kargs):
-        return bind_api(
-            path = '/%s/lists/memberships.json' % self.auth.get_username(),
-            parser = parse_lists,
-            allowed_param = ['cursor'],
-            require_auth = True
-        )(self, *args, **kargs)
-    lists_memberships.pagination_mode = 'cursor'
+    lists_memberships = bind_api(
+        path = '/{user}/lists/memberships.json',
+        parser = parse_lists,
+        allowed_param = ['user', 'cursor'],
+        require_auth = True
+    )
 
-    def lists_subscriptions(self, *args, **kargs):
-        return bind_api(
-            path = '/%s/lists/subscriptions.json' % self.auth.get_username(),
-            parser = parse_lists,
-            allowed_param = ['cursor'],
-            require_auth = True
-        )(self, *args, **kargs)
-    lists_subscriptions.pagination_mode = 'cursor'
+    lists_subscriptions = bind_api(
+        path = '/{user}/lists/subscriptions.json',
+        parser = parse_lists,
+        allowed_param = ['user', 'cursor'],
+        require_auth = True
+    )
 
     list_timeline = bind_api(
         path = '/{owner}/lists/{slug}/statuses.json',

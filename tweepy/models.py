@@ -42,7 +42,7 @@ class User(Model):
         return self._api.friends(user_id=self.id, **kargs)
 
     def followers(self, **kargs):
-        return self._api.followers(user_idself.id, **kargs)
+        return self._api.followers(user_id=self.id, **kargs)
 
     def follow(self):
         self._api.create_friendship(user_id=self.id)
@@ -51,6 +51,19 @@ class User(Model):
     def unfollow(self):
         self._api.destroy_friendship(user_id=self.id)
         self.following = False
+
+    def lists_memberships(self, *args, **kargs):
+        return self._api.lists_memberships(user=self.screen_name, *args, **kargs)
+
+    def lists_subscriptions(self, *args, **kargs):
+        return self._api.lists_subscriptions(user=self.screen_name, *args, **kargs)
+
+    def lists(self, *args, **kargs):
+        return self._api.lists(user=self.screen_name, *args, **kargs)
+
+    def followers_ids(self, *args, **kargs):
+        return self._api.followers_ids(user_id=self.id, *args, **kargs)
+
 
 class DirectMessage(Model):
 
@@ -113,15 +126,20 @@ class List(Model):
     def is_subscribed(self, id):
         return self._api.is_subscribed_list(self.user.screen_name, self.slug, id)
 
-# link up default model implementations.
-models = {
-    'status': Status,
-    'user': User,
-    'direct_message': DirectMessage,
-    'friendship': Friendship,
-    'saved_search': SavedSearch,
-    'search_result': SearchResult,
-    'retweet': Retweet,
-    'list': List,
-}
+
+class ModelFactory(object):
+    """
+    Used by parsers for creating instances
+    of models. You may subclass this factory
+    to add your own extended models.
+    """
+
+    status = Status
+    user = User
+    direct_message = DirectMessage
+    friendship = Friendship
+    saved_search = SavedSearch
+    search_result = SearchResult
+    retweet = Retweet
+    list = List
 
