@@ -121,6 +121,7 @@ class List(Model):
     def destroy(self):
         return self._api.destroy_list(self.slug)
 
+    @pagination_proxy('list_timeline')
     def timeline(self, **kargs):
         return self._api.list_timeline(self.user.screen_name, self.slug, **kargs)
 
@@ -130,9 +131,11 @@ class List(Model):
     def remove_member(self, id):
         return self._api.remove_list_member(self.slug, id)
 
+    @pagination_proxy('list_members')
     def members(self, **kargs):
         return self._api.list_members(self.user.screen_name, self.slug, **kargs)
 
+    @pagination_proxy('is_list_member')
     def is_member(self, id):
         return self._api.is_list_member(self.user.screen_name, self.slug, id)
 
@@ -142,6 +145,7 @@ class List(Model):
     def unsubscribe(self):
         return self._api.unsubscribe_list(self.user.screen_name, self.slug)
 
+    @pagination_proxy('list_subscribers')
     def subscribers(self, **kargs):
         return self._api.list_subscribers(self.user.screen_name, self.slug, **kargs)
 
