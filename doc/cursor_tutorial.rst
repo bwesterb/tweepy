@@ -13,7 +13,7 @@ We use pagination a lot in Twitter API development. Iterating through
 timelines, user lists, direct messages, etc. In order to perform
 pagination we must supply a page/cursor parameter with each of our
 requests. The problem here is this requires a lot of boiler plate code
-just to mange the pagination loop. To help mage pagination easier and
+just to manage the pagination loop. To help make pagination easier and
 require less code Tweepy has the Cursor object.
 
 Old way vs Cursor way
@@ -85,7 +85,7 @@ What if you only want n items or pages returned? You pass into the items() or pa
 .. code-block :: python
 
    # Only iterate through the first 200 statuses
-   for status in Cursor(api.user_timeline).limit(200):
+   for status in Cursor(api.user_timeline).items(200):
        process_status(status)
    
    # Only iterate through the first 3 pages

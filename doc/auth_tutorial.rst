@@ -21,7 +21,7 @@ Basic Authentication
 
 Basic authentication uses the user's Twitter username and password for
 authenticating with the API. You must query the user for these two
-pieces of infomation before we can authenticate.
+pieces of information before we can authenticate.
 
 Now first we must create an instance of the BasicAuthHandler and pass
 into it the username and password::
@@ -104,7 +104,7 @@ URL request. Here is a pseudo example of storing the request token in
 a session::
 
    session.set('request_token', (auth.request_token.key,
-   auth.request_token.secret)
+   auth.request_token.secret))
 
 So now we can redirect the user to the URL returned to us earlier from
 the get_authorization_url() method.
@@ -156,7 +156,7 @@ you would do this::
    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
    auth.set_access_token(key, secret)
 
-So now that we have our OAuthHandler equiped with an access token, we
+So now that we have our OAuthHandler equipped with an access token, we
 are ready for business::
 
    api = tweepy.API(auth)

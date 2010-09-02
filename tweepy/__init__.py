@@ -1,11 +1,11 @@
 # Tweepy
-# Copyright 2009 Joshua Roesslein
-# See LICENSE
+# Copyright 2009-2010 Joshua Roesslein
+# See LICENSE for details.
 
 """
 Tweepy Twitter API library
 """
-__version__ = '1.5'
+__version__ = '1.7.1'
 __author__ = 'Joshua Roesslein'
 __license__ = 'MIT'
 
